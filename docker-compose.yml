@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  gitea:
+    image: gitea/gitea:latest
+    container_name: gitea
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+      - DB_TYPE=mysql
+      - DB_HOST=192.168.1.60:3306
+      - DB_NAME=gitea
+      - DB_USER=gitea
+      - DB_PASSWD=gitea
+      - ROOT_URL=http://nginx/git/
+    restart: always
+    volumes:
+      - gitea_data:/data
+    networks:
+      - ci_cd
+    expose:
+      - "3000"  # web
+      - "22"    # ssh
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins
+    restart: always
+    user: root
+    environment:
+      - JENKINS_OPTS=--prefix=/jenkins
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - ci_cd
+    expose:
+      - "8080"
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - jenkins
+      - gitea
+    networks:
+      - ci_cd
+
+volumes:
+  gitea_data:
+  jenkins_home:
+
+networks:
+  ci_cd:
+    driver: bridge
+
