@@ -172,6 +172,11 @@ pipeline {
 }
 ```
 
+## Uruchamianie
+`docker-compose jenkins build`
+`docker-compose up -d`
+**Pełne włącznie chwilę trwa ze względu na gitlaba, który potrzebuje trochę czasu przy uruchomieniu**
+
 ## Specyfikacja
 ### Ubuntu 24.04
 ### Docker 26.1.3
