@@ -178,4 +178,8 @@ pipeline {
 + Hasło: admin
 ### Nginx 1.27.5
 ### GitLab 18.0
++ Login: root
++ Hasło: root
 ### MySQL 8.0.42
++ Login: root
++ Hasło: root
