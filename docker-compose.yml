@@ -1,61 +1,59 @@
 version: '3.8'
 
 services:
-  gitea:
-    image: gitea/gitea:latest
-    container_name: gitea
-    environment:
-      - USER_UID=1000
-      - USER_GID=1000
-      - DB_TYPE=mysql
-      - DB_HOST=192.168.1.60:3306
-      - DB_NAME=gitea
-      - DB_USER=gitea
-      - DB_PASSWD=gitea
-      - ROOT_URL=http://nginx/git/
+  gitlab:
+    image: gitlab/gitlab-ce:latest
+    container_name: gitlab
     restart: always
+    hostname: 'gitlab.local'
+    extra_hosts:
+      - "gitlab.localhost:host-gateway"
+      - "jenkins.localhost:host-gateway"
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://gitlab.localhost/'
+    ports:
+      - '8080:80'   
+      - '2222:22'    
     volumes:
-      - gitea_data:/data
+      - ./gitlab/config:/etc/gitlab
+      - ./gitlab/logs:/var/log/gitlab
+      - ./gitlab/data:/var/opt/gitlab
     networks:
-      - ci_cd
-    expose:
-      - "3000"  # web
-      - "22"    # ssh
+      - ci_net
 
   jenkins:
-    image: jenkins/jenkins:lts
+    build:
+      context: .
+      dockerfile: Dockerfile.jenkins
     container_name: jenkins
     restart: always
     user: root
-    environment:
-      - JENKINS_OPTS=--prefix=/jenkins
+    hostname: 'jenkins.local'
+    ports:
+      - '8081:8080' 
+      - '50000:50000'
     volumes:
-      - jenkins_home:/var/jenkins_home
+      - ./jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
-      - ci_cd
-    expose:
-      - "8080"
+      - ci_net
 
   nginx:
     image: nginx:latest
-    container_name: nginx
+    container_name: nginx_proxy
     restart: always
     ports:
-      - "80:80"
+      - "80:80"         
     volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro  
     depends_on:
+      - gitlab
       - jenkins
-      - gitea
     networks:
-      - ci_cd
-
-volumes:
-  gitea_data:
-  jenkins_home:
+      - ci_net 
 
 networks:
-  ci_cd:
+  ci_net:
     driver: bridge
 
