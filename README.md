@@ -8,6 +8,9 @@ Opis serwera CI/CD i współpracy usług Jenkins, GitLab oraz Nginx w środowisk
 + Gitlab - repozytorium kodu z webowym interfejsem do zarządzania wersjami i kodem źródłowym
 + Nginx - reverse proxy obsługujące kierowanie ruchem do Jenkins i GitLab
 
++ Jenkins - http://jenkins.localhost/
++ Gitlab - http://gitlab.localhost/
+
 ## 3. Konfiguracja Docker Compose
 ```
 version: '3.8'
@@ -183,3 +186,6 @@ pipeline {
 ### MySQL 8.0.42
 + Login: root
 + Hasło: root
+
+# Problemy
+Problemów dużo nie było, a jak już występowały to ze względu na nginx. Chociaż w trakcie zmieniłem Gitea na GitLaba.
