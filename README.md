@@ -173,9 +173,7 @@ pipeline {
 ```
 
 ## Uruchamianie
-`docker-compose jenkins build`
-
-`docker-compose up -d`
+`docker-compose jenkins build` `docker-compose up -d`
 
 **Pełne włącznie chwilę trwa ze względu na gitlaba, który potrzebuje trochę czasu przy uruchomieniu**
 
