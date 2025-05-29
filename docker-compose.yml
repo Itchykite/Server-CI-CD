@@ -6,9 +6,6 @@ services:
     container_name: gitlab
     restart: always
     hostname: 'gitlab.local'
-    extra_hosts:
-      - "gitlab.localhost:host-gateway"
-      - "jenkins.localhost:host-gateway"
     environment:
       GITLAB_OMNIBUS_CONFIG: |
         external_url 'http://gitlab.localhost/'
