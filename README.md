@@ -7,7 +7,7 @@ Opis serwera CI/CD i współpracy usług Jenkins, GitLab oraz Nginx w środowisk
 + Jenkins - serwer CI/CD opowiedzialny za budowę projektu
 + Gitlab - repozytorium kodu z webowym interfejsem do zarządzania wersjami i kodem źródłowym
 + Nginx - reverse proxy obsługujące kierowanie ruchem do Jenkins i GitLab
-
+***
 + Jenkins - http://jenkins.localhost/
 + Gitlab - http://gitlab.localhost/
 
