@@ -9,7 +9,8 @@ Opis serwera CI/CD i współpracy usług Jenkins, GitLab oraz Nginx w środowisk
 + Nginx - reverse proxy obsługujące kierowanie ruchem do Jenkins i GitLab
 
 ## 3. Konfiguracja Docker Compose
-`version: '3.8'
+```
+version: '3.8'
 
 services:
   gitlab:
@@ -64,10 +65,11 @@ services:
 networks:
   ci_net:
     driver: bridge
-`
+```
 
 ### Dockerfile.jenkins
-`FROM jenkins/jenkins:lts
+```
+FROM jenkins/jenkins:lts
 
 USER root
 
@@ -84,12 +86,13 @@ RUN apt-get update && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 USER jenkins
-`
+```
 
 Ze względu na to, że kod, który służył mi jako test do budowania zawierał kilka bibliotek zewnętrzych musiałem je zainstalować wewnąrz kontenera jenkins, aby mógł wszystko skompilować.
 
 ## Konfiguracja nginx
-`events {}
+```
+events {}
 
 http {
     server {
@@ -124,10 +127,10 @@ http {
         }
     }
 }
-`
-
+```
 ## Pipeline jenkins
-`pipeline {
+```
+pipeline {
     agent any
 
     stages {
@@ -164,7 +167,7 @@ http {
         }
     }
 }
-`
+```
 
 ## Specyfikacja
 ### Ubuntu 24.04
